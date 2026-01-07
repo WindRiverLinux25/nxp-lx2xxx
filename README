@@ -23,7 +23,7 @@ when using the Wind River setup.sh wrapper.
 
 License
 -------
-Copyright (C) 2024 Wind River Systems, Inc.
+Copyright (C) 2025 Wind River Systems, Inc.
 
 The right to copy, distribute or otherwise make use of this software may
 be licensed only pursuant to the terms of an applicable Wind River license
@@ -59,8 +59,8 @@ To get a list of patches applied to the kernel specific to this BSP
 along with patch descriptions use git whatchanged on the default
 kernel (git whatchanged <kernel_type>..<bsp_name>). For example:
 
-  # cd tmp-glibc/work-shared/<bsp_name>/kernel-source
-  # git whatchanged v6.6/standard/base..v6.6/standard/nxp-sdk-6.6/nxp-soc
+  # cd tmp/work-shared/<bsp_name>/kernel-source
+  # git whatchanged v6.12/standard/base..v6.12/standard/nxp-sdk-6.12/nxp-soc
 
 
 4. Boot Instructions
@@ -156,7 +156,7 @@ WRLinux product provides a solution to build bootloader image which contains
 U-Boot, RCW, etc. Please refer to section 12 to build NXP bootloader image.
 
 After building, the bootloader image (firmware_lx2160ardb-rev2_uboot_<boot-type>.img)
-is generated in directory <building-path>/tmp-glibc/deploy/images/nxp-lx2xxx.
+is generated in directory <building-path>/tmp/deploy/images/nxp-lx2xxx.
 
 And then burn it to the target board under the U-Boot prompt using the commands below:
 
@@ -210,9 +210,9 @@ https://docs.yoctoproject.org/dev-manual/wic.html
 
 This BSP supports disk images for SD card.
 After build the project, user will get a WIC image under the directory
-tmp-glibc/deploy/images/<bsp name>/, such as:
+tmp/deploy/images/<bsp name>/, such as:
 
-tmp-glibc/deploy/images/nxp-lx2xxx/wrlinux-image-std-nxp-lx2xxx.wic
+tmp/deploy/images/nxp-lx2xxx/wrlinux-image-std-nxp-lx2xxx.rootfs.wic
 
 Then user can write the output image to a SD card.
 
@@ -225,12 +225,12 @@ To burn images to SD card, user needs to follow two steps:
 
 WRLinux product provides a solution to build WIC image with NXP bootloader.
 Please refer to section 12 for the detailed description.
-After building, the WIC image(wrlinux-image-std-nxp-lx2xxx.wic) is generated
-in directory <building-path>/build/tmp-glibc/deploy/images/nxp-lx2xxx.
+After building, the WIC image(wrlinux-image-std-nxp-lx2xxx.rootfs.wic) is generated
+in directory <building-path>/build/tmp/deploy/images/nxp-lx2xxx.
 
 2) Burn WIC image
 
-# dd if=wrlinux-image-std-nxp-lx2xxx.wic of=/dev/your_sd_dev
+# dd if=wrlinux-image-std-nxp-lx2xxx.rootfs.wic of=/dev/your_sd_dev
 
 6.2 Set uboot env
 -----------------
@@ -365,7 +365,7 @@ via the U-Boot command line.
 
 NOTES:
 1. Use Image as a secondary kernel. It can be found in the directory
-   tmp-glibc/deploy/images/nxp-lx2xxx/Image
+   tmp/deploy/images/nxp-lx2xxx/Image
 2. 512 MB (the size of the memory reserved for crash kernel) is the
    recommended amount of memory. If you add more features to the kernel, you
    can increase this value to accommodate the capture kernel.
