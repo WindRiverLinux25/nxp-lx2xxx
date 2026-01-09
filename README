@@ -451,6 +451,7 @@ contents in local.conf file, and then build WRLinux image as usual.
 	CUSTOMER_RECIPES:qoriq-bsp-release += 'secure-boot-qoriq'
 	CUSTOMER_RECIPES:qoriq-bsp-release += 'u-boot-qoriq'
 	CUSTOMER_RECIPES:qoriq-bsp-release += 'qoriq-atf'
+	CUSTOMER_RECIPES:qoriq-bsp-release += 'qoriq-atf-tools-native'
 	CUSTOMER_RECIPES:freescale-layer += 'management-complex'
 	CUSTOMER_RECIPES:freescale-layer += 'mc-utils'
 	CUSTOMER_RECIPES:freescale-layer += 'ddr-phy'
@@ -459,7 +460,6 @@ contents in local.conf file, and then build WRLinux image as usual.
 	CUSTOMER_RECIPES:freescale-layer += 'ls2-phy'
 	CUSTOMER_RECIPES:freescale-layer += 'inphi'
 	CUSTOMER_RECIPES:freescale-layer += 'qoriq-cst-native'
-	CUSTOMER_RECIPES:freescale-layer += 'qoriq-atf-tools-native'
 
 Note: If customers want to integrate bootloader into their own product, they
       MUST consult NXP and their own legal department.
