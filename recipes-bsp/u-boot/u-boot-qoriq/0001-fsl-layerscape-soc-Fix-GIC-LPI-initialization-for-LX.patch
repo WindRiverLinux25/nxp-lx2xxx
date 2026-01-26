@@ -1,0 +1,51 @@
+From bd0128094047391f083a733e9aa181be4101ef87 Mon Sep 17 00:00:00 2001
+From: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+Date: Mon, 26 Jan 2026 14:08:43 +0800
+Subject: [PATCH] fsl-layerscape:soc: Fix GIC LPI initialization for LX2080
+
+Linux kernel reads LPI enable status based on CPU hardware ID, but
+current U-Boot only initializes LPI tables for the number of active
+cores. On multi-cluster systems like LX2160 running in 2080 mode
+(2 CPUs per cluster, one CPU disabled per cluster), this causes
+Linux kernel to think LPI is not enabled for the last 4 CPUs.
+
+Initialize LPI tables for all CPUs defined in device tree instead
+of only the number of active cores to ensure proper LPI enablement
+across all CPU hardware IDs.
+
+Upstream-Status: Pending
+
+Signed-off-by: Jianpeng Chang <jianpeng.chang.cn@windriver.com>
+---
+ arch/arm/cpu/armv8/fsl-layerscape/soc.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/cpu/armv8/fsl-layerscape/soc.c b/arch/arm/cpu/armv8/fsl-layerscape/soc.c
+index 00083751..2e6d4d79 100644
+--- a/arch/arm/cpu/armv8/fsl-layerscape/soc.c
++++ b/arch/arm/cpu/armv8/fsl-layerscape/soc.c
+@@ -63,6 +63,8 @@ static int fdt_add_resv_mem_gic_rd_tables(void *blob, u64 base, size_t size)
+ int ls_gic_rd_tables_init(void *blob)
+ {
+ 	u64 gic_lpi_base;
++	struct ccsr_gur __iomem *gur = (void *)(CFG_SYS_FSL_GUTS_ADDR);
++	u32 svr = gur_in32(&gur->svr);
+ 	int ret;
+ 
+ 	gic_lpi_base = ALIGN(gd->arch.resv_ram - GIC_LPI_SIZE, SZ_64K);
+@@ -70,7 +72,11 @@ int ls_gic_rd_tables_init(void *blob)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = gic_lpi_tables_init(gic_lpi_base, cpu_numcores());
++	if (SVR_SOC_VER(svr) == SVR_LX2080A)
++		ret = gic_lpi_tables_init(gic_lpi_base, cpu_numcores()*2);
++	else
++		ret = gic_lpi_tables_init(gic_lpi_base, cpu_numcores());
++
+ 	if (ret)
+ 		debug("%s: failed to init gic-lpi-tables\n", __func__);
+ 
+-- 
+2.52.0
+
